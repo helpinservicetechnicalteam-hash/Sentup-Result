@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Result Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <!-- SheetJS for reading Excel files in browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <!-- Main Landing Wrapper -->
+  <div id="main-container">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="logo-title">
+        <div class="logo-circle">R</div>
+        <div>
+          <h1>School Result Portal</h1>
+          <p>Class 10 & 12 Digital Marksheet</p>
+        </div>
+      </div>
+      <button id="adminBtn" class="admin-button">Admin</button>
+    </header>
+
+    <!-- Student Landing Section -->
+    <section id="student-landing" class="card">
+      <div class="hero-left">
+        <h2>Check Your Result</h2>
+        <p>Enter your Registration Number to view and print your marksheet.</p>
+        <div class="input-group">
+          <label for="regNoInput">Registration Number</label>
+          <input type="text" id="regNoInput" placeholder="e.g., 2024-10-001">
+        </div>
+        <button id="viewResultBtn" class="primary-button">See Result</button>
+        <p class="hint-text">Result available for Class 10 and 12 students only.</p>
+        <p id="studentError" class="error-text"></p>
+      </div>
+      <div class="hero-right">
+        <h3>Instructions</h3>
+        <ul>
+          <li>Verify your registration number on your admit card.</li>
+          <li>Use a modern browser (Chrome, Edge, Firefox) for best results.</li>
+          <li>After viewing, click “Print Result” to get an A4 size printout.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Result Display Section -->
+    <section id="result-section" class="card hidden">
+      <div id="marksheet">
+        <h2 class="center-text">Provisional Marksheet</h2>
+        <div class="marksheet-header">
+          <div>
+            <p><strong>Student Name:</strong> <span id="stName"></span></p>
+            <p><strong>Class:</strong> <span id="stClass"></span></p>
+            <p><strong>Registration No.:</strong> <span id="stReg"></span></p>
+          </div>
+          <div>
+            <p><strong>School:</strong> <span id="schoolName">Your School Name</span></p>
+            <p><strong>Session:</strong> <span id="sessionYear">2024–25</span></p>
+          </div>
+        </div>
+        <table id="marksTable">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Maximum Marks</th>
+              <th>Marks Obtained</th>
+            </tr>
+          </thead>
+          <tbody id="marksBody">
+          </tbody>
+        </table>
+        <div class="marksheet-footer">
+          <p><strong>Total Marks:</strong> <span id="totalMarks"></span></p>
+          <p><strong>Percentage:</strong> <span id="percentage"></span></p>
+          <p><strong>Result:</strong> <span id="resultStatus"></span></p>
+        </div>
+      </div>
+      <div class="result-buttons">
+        <button id="printBtn" class="secondary-button">Print Result (A4)</button>
+        <button id="nextResultBtn" class="primary-button-outline">Next Result</button>
+      </div>
+    </section>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Admin Login</h2>
+        <div class="input-group">
+          <label for="adminPassword">Admin Passkey</label>
+          <input type="password" id="adminPassword" placeholder="Enter Admin Passkey">
+        </div>
+        <p class="hint-text">Default passkey: Admin1234</p>
+        <p id="adminLoginError" class="error-text"></p>
+        <div class="modal-actions">
+          <button id="adminLoginBtn" class="primary-button">Login</button>
+          <button id="adminCancelBtn" class="secondary-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <section id="admin-panel" class="card hidden">
+      <h2>Admin Panel</h2>
+      <p>Upload class-wise result Excel files and manage result display.</p>
+
+      <div class="admin-controls">
+        <div class="input-group">
+          <label for="classSelect">Select Class</label>
+          <select id="classSelect">
+            <option value="10">Class 10</option>
+            <option value="12">Class 12</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="excelFileInput">Upload Excel File (Class-wise)</label>
+          <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv">
+          <p class="hint-text">
+            Required columns: RegistrationNo, Name, Class, Subject1, Subject1_Max, Subject2, Subject2_Max, ...
+          </p>
+        </div>
+
+        <button id="uploadExcelBtn" class="primary-button">Upload / Replace Result</button>
+        <p id="adminStatus" class="status-text"></p>
+      </div>
+
+      <div class="admin-extra">
+        <h3>Controls</h3>
+        <ul>
+          <li>Upload separate files for Class 10 and Class 12.</li>
+          <li>New upload will overwrite old data for that class (in current session).</li>
+          <li>Students will see latest uploaded data immediately.</li>
+        </ul>
+      </div>
+
+      <button id="adminLogoutBtn" class="primary-button-outline">Logout & Back to Landing</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+      </html>
